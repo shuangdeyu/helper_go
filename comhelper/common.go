@@ -104,12 +104,7 @@ func MergeString(s ...[]string) []string {
 		return s[0]
 	default:
 		var str []string
-		for i := 0; i < len(s); i++ {
-			v := s[i]
-			for j := 0; j < len(v); j++ {
-				str = append(str, v[j])
-			}
-		}
+		str = append(s[0], s[1]...)
 		return str
 	}
 }
@@ -133,6 +128,21 @@ func InArray(arr interface{}, val interface{}) bool {
 		}
 	}
 	return false
+}
+
+/**
+ * 字符串数组去重
+ */
+func DistinctArrString(arr []string) []string {
+	tmpMap := make(map[string]interface{})
+	ret := []string{}
+	for _, val := range arr {
+		if _, ok := tmpMap[val]; !ok && len(strings.TrimSpace(val)) > 0 {
+			ret = append(ret, val)
+			tmpMap[val] = struct{}{}
+		}
+	}
+	return ret
 }
 
 /**

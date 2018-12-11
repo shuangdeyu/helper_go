@@ -8,7 +8,6 @@ import (
 	"encoding/base64"
 	"encoding/pem"
 	"errors"
-	"strings"
 )
 
 /**
@@ -49,8 +48,8 @@ func CreateRsaKey() map[string]string {
 	}
 	var pu_key string
 	pu_key = string(data_pu)
-	pu_key = pu_key[strings.IndexAny(pu_key, "Y")+7:]
-	pu_key = pu_key[:strings.LastIndex(pu_key, "N")-7]
+	//pu_key = pu_key[strings.IndexAny(pu_key, "Y")+7:]
+	//pu_key = pu_key[:strings.LastIndex(pu_key, "N")-7]
 	key_map["public_key"] = string(pu_key)
 	return key_map
 }
@@ -80,7 +79,7 @@ func RsaEncrypt(origData []byte, publicKey string) (string, error) {
 		}
 		buffer.Write(bytes)
 	}
-	return base64.RawURLEncoding.EncodeToString(buffer.Bytes()), nil
+	return base64.StdEncoding.EncodeToString(buffer.Bytes()), nil
 }
 
 /**

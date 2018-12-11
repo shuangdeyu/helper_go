@@ -68,12 +68,13 @@ func UnSerialize(str string) (interface{}, error) {
 
 /**
  * 将数组转换到url形式字符串
+ * @param remove string 需要去除的字符串
  */
-func Array2UrlString(arr map[string]string, arr_key []string) string {
+func Array2UrlString(arr map[string]string, arr_key []string, remove string) string {
 	content := ""
 	if len(arr) > 0 && len(arr_key) > 0 {
 		for _, v := range arr_key {
-			if v != "sign" {
+			if v != remove {
 				content += v + "=" + arr[v] + "&"
 			}
 		}

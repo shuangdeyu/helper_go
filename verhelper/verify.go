@@ -23,7 +23,7 @@ func IsMobile(mobile string) bool {
 }
 
 /**
- * 邮件格式是否正确
+ * 邮箱格式是否正确
  */
 func IsEmail(email string) bool {
 	if m, _ := regexp.MatchString(`^([\w\.\_]{2,10})@(\w{1,}).([a-z]{2,4})$`, email); !m {

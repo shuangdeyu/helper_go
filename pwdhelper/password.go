@@ -1,8 +1,10 @@
 package pwdhelper
 
 import (
+	"crypto/sha256"
 	"crypto/sha512"
 	"encoding/base64"
+	"fmt"
 	"golang.org/x/crypto/pbkdf2"
 	"helper_go/comhelper"
 )
@@ -11,7 +13,7 @@ import (
  * 一种密码加密方式
  * mode只决定password和salt的组合方式
  */
-func PasswordHash(password string, salt string, mode int) string {
+func PasswordHashSalt(password string, salt string, mode int) string {
 	toHAshString := ""
 	if mode == 0 {
 		toHAshString = salt + comhelper.Md5(password+salt) + salt
@@ -51,4 +53,22 @@ func SubStr(str string, start, length int) string {
 		end = rl
 	}
 	return string(rs[start:end])
+}
+
+/**
+ * 另一种密码加密方式，不带盐
+ * @param password string 明文密码
+ * @param new bool
+ * @return string
+ */
+func PasswordHash(password string, new bool) string {
+	step1 := comhelper.Md5(password)
+	step2 := step1[0:10]
+	new_pass := comhelper.Md5(step1 + step2)
+	if !new {
+		return new_pass
+	}
+	salt := comhelper.Md5(new_pass)[3:22]
+	result := pbkdf2.Key([]byte(new_pass), []byte(salt), 3391, 20, sha256.New)
+	return fmt.Sprintf("%x", result)
 }

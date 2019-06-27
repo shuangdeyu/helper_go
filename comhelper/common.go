@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/yvasiyarov/php_session_decoder/php_serialize"
+	"golang.org/x/crypto/bcrypt"
 	"reflect"
 	"regexp"
 	"strconv"
@@ -52,6 +53,30 @@ func Md5(str string) string {
 	has := md5.Sum(data)
 	md5str := fmt.Sprintf("%x", has) // 将[]byte转成16进制
 	return md5str
+}
+
+/**
+ * bcrypt加密，可替代md5 ，更可靠
+ */
+func BcryptEncode(password string) string {
+	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		return ""
+	}
+	encodePW := string(hash) // 保存在数据库的密码，虽然每次生成都不同，只需保存一份即可
+	return encodePW
+}
+
+/**
+ * bcrypt 验证
+ */
+func BcryptDecode(password, enpassword string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(enpassword), []byte(password))
+	if err != nil {
+		return false
+	} else {
+		return true
+	}
 }
 
 /**

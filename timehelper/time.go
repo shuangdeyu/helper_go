@@ -111,3 +111,11 @@ func TimeToTimeZero(t string) string {
 	zt := time.Unix(comhelper.StringToInt64(unix), 0).Format("2006-01-02")
 	return zt + " 00:00:00"
 }
+
+/**
+ * 获取年月日时字符串
+ */
+func YearMonthDayHourStr() string {
+	year, month, day := time.Now().Date()
+	return strconv.Itoa(year) + strconv.Itoa(int(month)) + strconv.Itoa(day) + strconv.Itoa(time.Now().Hour())
+}

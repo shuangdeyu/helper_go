@@ -249,10 +249,12 @@ func Int64ToString(i int64) string {
 }
 
 /**
- * 任务类型转换成int
+ * 任何类型转换成int
  */
 func AnyToInt(i interface{}) int {
 	switch i.(type) {
+	case int:
+		return i.(int)
 	case int64:
 		return int(i.(int64))
 	case string:
@@ -261,4 +263,21 @@ func AnyToInt(i interface{}) int {
 		return int(i.(float64))
 	}
 	return 0
+}
+
+/**
+ * 任何类型转换成string
+ */
+func AnyToString(i interface{}) string {
+	switch i.(type) {
+	case int:
+		return IntToString(i.(int))
+	case int64:
+		return Int64ToString(i.(int64))
+	case string:
+		return i.(string)
+	case float64:
+		return Float64ToString(i.(float64))
+	}
+	return ""
 }

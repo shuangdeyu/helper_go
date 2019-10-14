@@ -247,3 +247,18 @@ func Int64ToString(i int64) string {
 	str := strconv.FormatInt(i, 10)
 	return str
 }
+
+/**
+ * 任务类型转换成int
+ */
+func AnyToInt(i interface{}) int {
+	switch i.(type) {
+	case int64:
+		return int(i.(int64))
+	case string:
+		return StringToInt(i.(string))
+	case float64:
+		return int(i.(float64))
+	}
+	return 0
+}

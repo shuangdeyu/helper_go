@@ -1,6 +1,7 @@
 package timehelper
 
 import (
+	"fmt"
 	"helper_go/comhelper"
 	"strconv"
 	"time"
@@ -118,4 +119,15 @@ func TimeToTimeZero(t string) string {
 func YearMonthDayHourStr() string {
 	year, month, day := time.Now().Date()
 	return strconv.Itoa(year) + strconv.Itoa(int(month)) + strconv.Itoa(day) + strconv.Itoa(time.Now().Hour())
+}
+
+/**
+ * 获取UTC时间
+ */
+func CurrentUtcTime() string {
+	now := time.Now()
+	year, mon, day := now.UTC().Date()
+	hour, min, sec := now.UTC().Clock()
+	t := fmt.Sprintf("%04d%02d%02d%02d%02d%02d", year, mon, day, hour, min, sec)
+	return t
 }

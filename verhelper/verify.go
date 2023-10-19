@@ -26,7 +26,7 @@ func IsMobile(mobile string) bool {
  * 邮箱格式是否正确
  */
 func IsEmail(email string) bool {
-	if m, _ := regexp.MatchString(`^([\w\.\_]{2,10})@(\w{1,}).([a-z]{2,4})$`, email); !m {
+	if m, _ := regexp.MatchString(`^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$`, email); !m {
 		return false
 	}
 	return true
@@ -77,6 +77,23 @@ func PasswordReg(pwd string) bool {
 	m2, _ := regexp.MatchString(`^[0-9]{1,}$`, pwd)
 	m3, _ := regexp.MatchString(`^[a-zA-Z]{1,}$`, pwd)
 	m4, _ := regexp.MatchString(`^[~!@#$%^&*()_+-=*-+.,';]{1,}$`, pwd)
+	m5 := IsCharOrNum(pwd)
+	if !m1 || m2 || m3 || m4 || !m5 {
+		return false
+	}
+	return true
+}
+
+/**
+ * 蓝牙密码验证
+ * 必须包含字母以及数字，4~20位，
+ * 允许包含 -_ 特殊字符
+ */
+func BlePasswordReg(pwd string) bool {
+	m1, _ := regexp.MatchString(`^[\w-_]{4,20}$`, pwd)
+	m2, _ := regexp.MatchString(`^[0-9]{1,}$`, pwd)
+	m3, _ := regexp.MatchString(`^[a-zA-Z]{1,}$`, pwd)
+	m4, _ := regexp.MatchString(`^[-_]{1,}$`, pwd)
 	m5 := IsCharOrNum(pwd)
 	if !m1 || m2 || m3 || m4 || !m5 {
 		return false

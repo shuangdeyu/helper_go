@@ -3,6 +3,7 @@ package comhelper
 import (
 	"bufio"
 	"encoding/base64"
+	"github.com/Unknwon/goconfig"
 	"log"
 	"os"
 	"path/filepath"
@@ -64,4 +65,28 @@ func PathExists(path string) (bool, error) {
 		return false, nil
 	}
 	return false, err
+}
+
+/**********************************************************************************
+ * ini配置文件读取
+ */
+var (
+	iniCfg *goconfig.ConfigFile
+)
+
+func InitIni(path string) {
+	var tmpErr error
+	iniCfg, tmpErr = goconfig.LoadConfigFile(path)
+	if tmpErr != nil {
+		panic("读取配置文件失败")
+	}
+}
+
+func LoadIni(param1 string, param2 string) string {
+
+	result, err := iniCfg.GetValue(param1, param2)
+	if err != nil {
+		log.Fatal("无法获取键值", err)
+	}
+	return result
 }

@@ -3,16 +3,18 @@ package comhelper
 import (
 	"bytes"
 	"github.com/satori/go.uuid"
+	"math/rand"
 	"regexp"
 	"runtime"
 	"strconv"
+	"time"
 )
 
 const (
 	CODE_TIME_BASE      = 1 // 时间序列生成，注意：严重不推荐
-	CODE_NAME_HASH_MD5  = 3 //基于md5生成
-	CODE_RANDOM         = 4 //基于随机数生成，建议使用这种方式
-	CODE_NAME_HASH_SHA1 = 5 //基于sha1生成，
+	CODE_NAME_HASH_MD5  = 3 // 基于md5生成
+	CODE_RANDOM         = 4 // 基于随机数生成，建议使用这种方式
+	CODE_NAME_HASH_SHA1 = 5 // 基于sha1生成，
 )
 
 /**
@@ -65,4 +67,20 @@ func GetGid() uint64 {
 	b = b[:bytes.IndexByte(b, ' ')]
 	n, _ := strconv.ParseUint(string(b), 10, 64)
 	return n
+}
+
+/**
+ * 获取随机字符串
+ */
+func RandomString(n int) string {
+	str := "0123456789" +
+		"abcdefghijklmnopqrstuvwxyz" +
+		"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	bytes := []byte(str)
+	result := []byte{}
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+	for i := 0; i < n; i++ {
+		result = append(result, bytes[r.Intn(len(bytes))])
+	}
+	return string(result)
 }

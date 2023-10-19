@@ -4,8 +4,11 @@ import (
 	"crypto/md5"
 	"encoding/json"
 	"fmt"
+	"github.com/axgle/mahonia"
+	"github.com/vmihailenco/msgpack"
 	"github.com/yvasiyarov/php_session_decoder/php_serialize"
 	"golang.org/x/crypto/bcrypt"
+	"net/url"
 	"reflect"
 	"regexp"
 	"strconv"
@@ -44,6 +47,14 @@ func JsonEncode(v interface{}) string {
 	} else {
 		return string(ret)
 	}
+}
+
+/**
+ * Msgpack序列化
+ */
+func MsgpackEncode(v interface{}) ([]byte, error) {
+	ret, err := msgpack.Marshal(v)
+	return ret, err
 }
 
 /**
@@ -111,6 +122,25 @@ func Array2UrlString(arr map[string]string, arr_key []string, remove string) str
 }
 
 /**
+ * 将数组转换到url形式字符串
+ * @param remove string 需要去除的字符串
+ */
+func Array2UrlStringByEncode(arr map[string]string, arr_key []string, remove string) string {
+	content := ""
+	if len(arr) > 0 && len(arr_key) > 0 {
+		for _, v := range arr_key {
+			if v != remove {
+				content += v + "=" + arr[v] + "&"
+			}
+		}
+		content = content[0 : len(content)-1]
+	}
+	content = strings.TrimSpace(content)
+	content = url.QueryEscape(content)
+	return content
+}
+
+/**
  * 合并两个map数组
  */
 func MergeMap(m1 map[string]interface{}, m2 map[string]interface{}) map[string]interface{} {
@@ -158,6 +188,18 @@ func InArray(arr interface{}, val interface{}) bool {
 }
 
 /**
+ * 判断数组是否包含某个元素的部分
+ */
+func InArrayContains(arr []string, str string) bool {
+	for _, v := range arr {
+		if strings.Contains(str, v) {
+			return true
+		}
+	}
+	return false
+}
+
+/**
  * 字符串数组去重
  */
 func DistinctArrString(arr []string) []string {
@@ -170,6 +212,20 @@ func DistinctArrString(arr []string) []string {
 		}
 	}
 	return ret
+}
+
+/**
+ * map[string]string to map[string]interface{}
+ */
+func MapStringToInterface(param map[string]string) (data map[string]interface{}) {
+	if len(param) > 0 {
+		ret := map[string]interface{}{}
+		for k, v := range param {
+			ret[k] = v
+		}
+		data = ret
+	}
+	return
 }
 
 /**
@@ -210,7 +266,7 @@ func StringToFloat(str string, bit int) float64 {
 }
 
 /**
- * float64转string
+ * float64 转 string
  */
 func Float64ToString(f float64) string {
 	str := strconv.FormatFloat(f, 'g', -1, 64)
@@ -281,4 +337,50 @@ func AnyToString(i interface{}) string {
 		return Float64ToString(i.(float64))
 	}
 	return ""
+}
+
+/**
+ * 任何类型转换成float64
+ */
+func AnyToFloat64(i interface{}) float64 {
+	switch i.(type) {
+	case int:
+		return float64(i.(int))
+	case int64:
+		return float64(i.(int64))
+	case string:
+		return StringToFloat(i.(string), 64)
+	case float64:
+		return i.(float64)
+	}
+	return 0
+}
+
+// 判断变量是否为空
+func Empty(params interface{}) bool {
+	//初始化变量
+	var (
+		flag         bool = true
+		defaultValue reflect.Value
+	)
+
+	r := reflect.ValueOf(params)
+
+	//获取对应类型默认值
+	defaultValue = reflect.Zero(r.Type())
+	//由于params 接口类型 所以default_value也要获取对应接口类型的值 如果获取不为接口类型 一直为返回false
+	if !reflect.DeepEqual(r.Interface(), defaultValue.Interface()) {
+		flag = false
+	}
+	return flag
+}
+
+// 字符串编码转换
+func ConvertEncoding(src string, srcCode string, tagCode string) string {
+	srcCoder := mahonia.NewDecoder(srcCode)
+	srcResult := srcCoder.ConvertString(src)
+	tagCoder := mahonia.NewDecoder(tagCode)
+	_, cdata, _ := tagCoder.Translate([]byte(srcResult), true)
+	result := string(cdata)
+	return result
 }

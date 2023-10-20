@@ -74,7 +74,7 @@ func NewEngineInit() *xorm.Engine {
 			log.Println("数据库连接出错: ", err.Error())
 		}
 		// 设置连接最长使用时间
-		engine.DB().SetConnMaxLifetime(time.Duration(3600) * time.Second)
+		engine.SetConnMaxLifetime(time.Duration(3600) * time.Second)
 		//engine.DB().SetMaxOpenConns(3)
 		// 设置表前缀映射
 		if prefix != "" {

@@ -7,11 +7,14 @@ import (
 	"time"
 )
 
+const timeLayout = "2006-01-02 15:04:05"
+const timeLayoutDate = "2006-01-02"
+
 /**
  * 获取当前时间
  */
 func CurrentTime() string {
-	now := time.Now().Format("2006-01-02 15:04:05")
+	now := time.Now().Format(timeLayout)
 	return now
 }
 
@@ -43,28 +46,10 @@ func CurrentTimeUnixNano() string {
 }
 
 /**
- * 获取当天零点时间
- */
-func CurrentTimeZero() string {
-	todayDateStr := time.Now().In(time.Local).Format("2006-01-02")
-	return todayDateStr + " 00:00:00"
-	/*t, _ := time.Parse("2006-01-02", todayDateStr)
-	return t.Format("2006-01-02 15:04:05")*/
-}
-
-/**
- * 获取当天末点时间
- */
-func CurrentTimeEnd() string {
-	todayDateStr := time.Now().In(time.Local).Format("2006-01-02")
-	return todayDateStr + " 23:59:59"
-}
-
-/**
  * 获取当前日期
  */
 func CurrentDay() string {
-	now := time.Now().Format("2006-01-02")
+	now := time.Now().Format(timeLayoutDate)
 	return now
 }
 
@@ -75,7 +60,7 @@ func MonthFirstDay() string {
 	now := time.Now()
 	year, month, _ := now.Date()
 	location := now.Location()
-	day := time.Date(year, month, 1, 0, 0, 0, 0, location).Format("2006-01-02")
+	day := time.Date(year, month, 1, 0, 0, 0, 0, location).Format(timeLayoutDate)
 	return day
 }
 
@@ -87,7 +72,7 @@ func MonthEndDay() string {
 	year, month, _ := now.Date()
 	location := now.Location()
 	day := time.Date(year, month, 1, 0, 0, 0, 0, location)
-	last_day := day.AddDate(0, 1, -1).Format("2006-01-02")
+	last_day := day.AddDate(0, 1, -1).Format(timeLayoutDate)
 	return last_day
 }
 
@@ -95,9 +80,9 @@ func MonthEndDay() string {
  * 时间转换成时间戳
  */
 func TimeToUnix(t string) string {
-	loc, _ := time.LoadLocation("Local")                              // 获取时区
-	theTime, _ := time.ParseInLocation("2006-01-02 15:04:05", t, loc) // 使用模板在对应时区转化为time.time类型
-	sr := theTime.Unix()                                              // 转化为时间戳
+	loc, _ := time.LoadLocation("Local")                   // 获取时区
+	theTime, _ := time.ParseInLocation(timeLayout, t, loc) // 使用模板在对应时区转化为time.time类型
+	sr := theTime.Unix()                                   // 转化为时间戳
 	str := strconv.FormatInt(sr, 10)
 	return str
 }
@@ -106,7 +91,7 @@ func TimeToUnix(t string) string {
  * 时间戳转换成时间
  */
 func UnixToTime(u string) string {
-	t := time.Unix(comhelper.StringToInt64(u), 0).Format("2006-01-02 15:04:05")
+	t := time.Unix(comhelper.StringToInt64(u), 0).Format(timeLayout)
 	return t
 }
 
@@ -115,7 +100,7 @@ func UnixToTime(u string) string {
  */
 func TimeToDate(t string) string {
 	tu := TimeToUnix(t)
-	d := time.Unix(comhelper.StringToInt64(tu), 0).Format("2006-01-02")
+	d := time.Unix(comhelper.StringToInt64(tu), 0).Format(timeLayoutDate)
 	return d
 }
 
@@ -133,8 +118,8 @@ func TimeToDay(t string) int {
  */
 func GetDayDiffer(end_time, start_time string) int64 {
 	var day int64
-	t1, _ := time.ParseInLocation("2006-01-02 15:04:05", start_time, time.Local)
-	t2, _ := time.ParseInLocation("2006-01-02 15:04:05", end_time, time.Local)
+	t1, _ := time.ParseInLocation(timeLayout, start_time, time.Local)
+	t2, _ := time.ParseInLocation(timeLayout, end_time, time.Local)
 	diff := t2.Unix() - t1.Unix() // 时间戳差
 	day = diff / 86400
 	return day
@@ -145,8 +130,8 @@ func GetDayDiffer(end_time, start_time string) int64 {
  */
 func GetDayDifferBySecond(end_time, start_time string) int64 {
 	//var day int64
-	t1, _ := time.ParseInLocation("2006-01-02 15:04:05", start_time, time.Local)
-	t2, _ := time.ParseInLocation("2006-01-02 15:04:05", end_time, time.Local)
+	t1, _ := time.ParseInLocation(timeLayout, start_time, time.Local)
+	t2, _ := time.ParseInLocation(timeLayout, end_time, time.Local)
 	diff := t2.Unix() - t1.Unix() // 时间戳差
 	//day = diff / 60
 	return diff
@@ -157,8 +142,8 @@ func GetDayDifferBySecond(end_time, start_time string) int64 {
  */
 func GetDayDifferByMin(end_time, start_time string) int64 {
 	var day int64
-	t1, _ := time.ParseInLocation("2006-01-02 15:04:05", start_time, time.Local)
-	t2, _ := time.ParseInLocation("2006-01-02 15:04:05", end_time, time.Local)
+	t1, _ := time.ParseInLocation(timeLayout, start_time, time.Local)
+	t2, _ := time.ParseInLocation(timeLayout, end_time, time.Local)
 	diff := t2.Unix() - t1.Unix() // 时间戳差
 	day = diff / 60
 	return day
@@ -183,13 +168,13 @@ func CompareTwoTime(t1, t2 string) bool {
 func TimeToTimeZero(t string) string {
 	// 先转换成时间戳
 	unix := TimeToUnix(t)
-	zt := time.Unix(comhelper.StringToInt64(unix), 0).Format("2006-01-02")
+	zt := time.Unix(comhelper.StringToInt64(unix), 0).Format(timeLayoutDate)
 	return zt + " 00:00:00"
 }
 func TimeToTimeEnd(t string) string {
 	// 先转换成时间戳
 	unix := TimeToUnix(t)
-	zt := time.Unix(comhelper.StringToInt64(unix), 0).Format("2006-01-02")
+	zt := time.Unix(comhelper.StringToInt64(unix), 0).Format(timeLayoutDate)
 	return zt + " 23:59:59"
 }
 
@@ -241,7 +226,7 @@ func TimeAddDay(times string, day int) string {
 	ts := time.Unix(unix, 0)
 	tst := ts.AddDate(0, 0, day)
 	// 转换成字符串
-	t := tst.Format("2006-01-02 15:04:05")
+	t := tst.Format(timeLayout)
 	return t
 }
 
@@ -255,7 +240,7 @@ func TimeAdd(times string, add_time time.Duration) string {
 	ts := time.Unix(unix, 0)
 	tst := ts.Add(add_time)
 	// 转换成字符串
-	t := tst.Format("2006-01-02 15:04:05")
+	t := tst.Format(timeLayout)
 	return t
 }
 
@@ -281,4 +266,202 @@ func InWorkTime() bool {
 func DayAgoTime(day int64) string {
 	tim := time.Now().Unix() - int64(86400)*day
 	return UnixToTime(comhelper.Int64ToString(tim))
+}
+
+/**
+ * today:获取当天零点时间
+ */
+func TodayStart(now time.Time) string {
+	if now.IsZero() {
+		now = time.Now()
+	}
+	todayDateStr := now.Format(timeLayoutDate)
+	return todayDateStr + " 00:00:00"
+	/*t, _ := time.Parse(timeLayoutDate, todayDateStr)
+	return t.Format(timeLayout)*/
+}
+
+/**
+ * today:获取当天末点时间
+ */
+func TodayEnd(now time.Time) string {
+	if now.IsZero() {
+		now = time.Now()
+	}
+	todayDateStr := now.Format(timeLayoutDate)
+	return todayDateStr + " 23:59:59"
+}
+
+/**
+ * thisweek:获取这个星期的起始时间
+ */
+func ThisWeekStart(now time.Time) string {
+	if now.IsZero() {
+		now = time.Now()
+	}
+	weekStart := now.AddDate(0, 0, -int(now.Weekday())+1)
+	return weekStart.Format(timeLayoutDate) + " 00:00:00"
+}
+
+/**
+ * thisweek:获取这个星期的结束时间
+ */
+func ThisWeekEnd(now time.Time) string {
+	if now.IsZero() {
+		now = time.Now()
+	}
+	weekStart := now.AddDate(0, 0, -int(now.Weekday())+1)
+	weekEnd := weekStart.AddDate(0, 0, 6)
+	return weekEnd.Format(timeLayoutDate) + " 23:59:59"
+}
+
+/**
+ * thismonth:获取这个月的起始时间
+ */
+func ThisMonthStart(now time.Time) string {
+	if now.IsZero() {
+		now = time.Now()
+	}
+	firstDay := time.Date(now.Year(), now.Month(), 1, 0, 0, 0, 0, now.Location())
+	return firstDay.Format(timeLayout)
+}
+
+/**
+ * thismonth:获取这个月的结束时间
+ */
+func ThisMonthEnd(now time.Time) string {
+	if now.IsZero() {
+		now = time.Now()
+	}
+	firstDay := time.Date(now.Year(), now.Month(), 1, 0, 0, 0, 0, now.Location())
+	nextMonth := firstDay.AddDate(0, 1, 0)
+	lastDay := nextMonth.Add(-time.Second)
+	return lastDay.Format(timeLayout)
+}
+
+/**
+ * thisyear:获取本年的起始时间
+ */
+func ThisYearStart(now time.Time) string {
+	if now.IsZero() {
+		now = time.Now()
+	}
+	firstDay := time.Date(now.Year(), time.January, 1, 0, 0, 0, 0, now.Location())
+	return firstDay.Format(timeLayout)
+}
+
+/**
+ * thisyear:获取本年的结束时间
+ */
+func ThisYearEnd(now time.Time) string {
+	if now.IsZero() {
+		now = time.Now()
+	}
+	firstDay := time.Date(now.Year(), time.January, 1, 0, 0, 0, 0, now.Location())
+	nextYear := firstDay.AddDate(1, 0, 0)
+	lastDay := nextYear.Add(-time.Second)
+	return lastDay.Format(timeLayout)
+}
+
+/**
+ * lastNHour:最近N小时时间，即当前时间的前N小时时间
+ */
+func LastSomeHour(now time.Time, n int) string {
+	if now.IsZero() {
+		now = time.Now()
+	}
+	startTime := now.Add(-time.Hour * time.Duration(n))
+	return startTime.Format(timeLayout)
+}
+
+/**
+ * lastNDays:最近N天时间，即当天时间减去N天的时间
+ */
+func LastSomeDays(now time.Time, n int) string {
+	if now.IsZero() {
+		now = time.Now()
+	}
+	startTime := now.AddDate(0, 0, -n)
+	return startTime.Format(timeLayout)
+}
+
+/**
+ * lastNMonths:最近N个月时间，即当天时间的前N个月时间
+ */
+func LastSomeMonths(now time.Time, n int) string {
+	if now.IsZero() {
+		now = time.Now()
+	}
+	startTime := now.AddDate(0, -n, 0)
+	return startTime.Format(timeLayout)
+}
+
+/**
+ * yesterday:昨天的开始时间
+ */
+func YesterdayStart(now time.Time) string {
+	if now.IsZero() {
+		now = time.Now()
+	}
+	startTime := now.AddDate(0, 0, -1)
+	return startTime.Format(timeLayoutDate) + " 00:00:00"
+}
+
+/**
+ * yesterday:昨天的结束时间
+ */
+func YesterdayEnd(now time.Time) string {
+	if now.IsZero() {
+		now = time.Now()
+	}
+	startTime := now.AddDate(0, 0, -1)
+	return startTime.Format(timeLayoutDate) + " 23:59:59"
+}
+
+/**
+ * previousWeek:上一个星期的开始时间
+ */
+func PreviousWeekStart(now time.Time) string {
+	if now.IsZero() {
+		now = time.Now()
+	}
+	// 计算上个星期的起始时间，由于是要获取上星期第一天，所以不能减7，否则第一天也被减掉了
+	startTime := now.AddDate(0, 0, int(-now.Weekday()-6))
+	return startTime.Format("2006-01-02") + " 00:00:00"
+}
+
+/**
+ * previousWeek:上一个星期的结束时间
+ */
+func PreviousWeekEnd(now time.Time) string {
+	if now.IsZero() {
+		now = time.Now()
+	}
+	startTime := now.AddDate(0, 0, int(-now.Weekday()-6))
+	// 加上6天，得到上个星期的结束时间
+	endTime := startTime.AddDate(0, 0, 6)
+	return endTime.Format("2006-01-02") + " 23:59:59"
+}
+
+/**
+ * previousMonth:上一个月的开始时间
+ */
+func PreviousMonthStart(now time.Time) string {
+	if now.IsZero() {
+		now = time.Now()
+	}
+	startTime := time.Date(now.Year(), now.Month()-1, 1, 0, 0, 0, 0, now.Location())
+	return startTime.Format("2006-01-02 15:04:05")
+}
+
+/**
+ * previousMonth:上一个月的结束时间
+ */
+func PreviousMonthEnd(now time.Time) string {
+	if now.IsZero() {
+		now = time.Now()
+	}
+	nextMonth := time.Date(now.Year(), now.Month(), 1, 0, 0, 0, 0, now.Location())
+	endTime := nextMonth.Add(-time.Second)
+	return endTime.Format("2006-01-02 15:04:05")
 }

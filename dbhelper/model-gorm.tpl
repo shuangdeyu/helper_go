@@ -5,7 +5,6 @@ package {{.PackageName}}
 import (
     "errors"
 	"fmt"
-	"helper_go/comhelper"
 	"helper_go/dbhelper"
 	"log"
 )
@@ -46,7 +45,7 @@ func (m *{{$exportModelName}}) Query(args ...interface{}) ([]{{$exportModelName}
 	if len(args) > 3 {
 		switch val := args[3].(type) {
 		case []int:
-			s += " limit " + comhelper.IntToString(val[0]) + "," + comhelper.IntToString(val[1])
+			s += " limit " + strconv.Itoa(val[0]) + "," + strconv.Itoa(val[1])
 		}
 	}
 
@@ -92,7 +91,7 @@ func (m *{{$exportModelName}}) QueryByMap(args ...interface{}) ([]{{$exportModel
 	if len(args) > 2 {
 		switch val := args[2].(type) {
 		case []int:
-			s += "limit " + comhelper.IntToString(val[0]) + "," + comhelper.IntToString(val[1])
+			s += "limit " + strconv.Itoa(val[0]) + "," + strconv.Itoa(val[1])
 		}
 	}
 

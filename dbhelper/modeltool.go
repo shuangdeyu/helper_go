@@ -171,12 +171,12 @@ func TypeConvert(str string) string {
 		return "int"
 	}
 
-	sliceStr := []string{"varchar", "text", "longtext", "char", "date", "enum"}
+	sliceStr := []string{"varchar", "text", "longtext", "char", "enum"}
 	if v := comhelper.InArrayContains(sliceStr, str); v {
 		return "string"
 	}
 
-	sliceDate := []string{"timestamp", "datetime"}
+	sliceDate := []string{"timestamp", "datetime", "date"}
 	if v := comhelper.InArrayContains(sliceDate, str); v {
 		return "time.Time"
 	}
@@ -194,6 +194,11 @@ func TypeConvert(str string) string {
 	sliceInt := []string{"int"}
 	if v := comhelper.InArrayContains(sliceInt, str); v {
 		return "int"
+	}
+
+	sliceByte := []string{"blob"}
+	if v := comhelper.InArrayContains(sliceByte, str); v {
+		return "[]byte"
 	}
 
 	return str

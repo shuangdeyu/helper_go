@@ -3,11 +3,13 @@ package servicehelper
 import (
 	"bytes"
 	"context"
-	"github.com/smallnest/rpcx/client"
-	"github.com/smallnest/rpcx/codec"
 	"io/ioutil"
 	"log"
 	"net/http"
+
+	etcd_client "github.com/rpcxio/rpcx-etcd/client"
+	"github.com/smallnest/rpcx/client"
+	"github.com/smallnest/rpcx/codec"
 )
 
 const (
@@ -79,7 +81,7 @@ func CallService(addr, service, method string, params map[string]interface{}) (O
  * 通过etcd调用服务
  */
 func CallServiceByEtcd(addr, path, service, method string, params map[string]interface{}) (Out, error) {
-	d := client.NewEtcdDiscovery(path, service, []string{addr}, nil)
+	d, _ := etcd_client.NewEtcdDiscovery(path, service, []string{addr}, false, nil)
 	xclient := client.NewXClient(service, client.Failtry, client.RandomSelect, d, client.DefaultOption)
 	defer xclient.Close()
 
@@ -97,12 +99,16 @@ func CallServiceByEtcd(addr, path, service, method string, params map[string]int
  * 通过TCP调用服务
  */
 func CallServiceByTcp(addr, service, method string, params map[string]interface{}) (Out, error) {
-	d := client.NewPeer2PeerDiscovery("tcp@"+addr, "")
+	d, err := client.NewPeer2PeerDiscovery("tcp@"+addr, "")
+	if err != nil {
+		log.Println("failed to connection CallServiceByTcp: ", err)
+		return Out{}, err
+	}
 	xclient := client.NewXClient(service, client.Failtry, client.RandomSelect, d, client.DefaultOption)
 	defer xclient.Close()
 
 	output := &Output{}
-	err := xclient.Call(context.Background(), method, params, output)
+	err = xclient.Call(context.Background(), method, params, output)
 	if err != nil {
 		log.Println("failed to call CallServiceByTcp: ", err)
 		return Out{}, err

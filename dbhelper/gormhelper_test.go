@@ -1,12 +1,12 @@
 package dbhelper
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"testing"
 	"time"
 
-	"database/sql"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )

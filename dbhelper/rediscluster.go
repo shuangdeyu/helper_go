@@ -1,11 +1,13 @@
 package dbhelper
 
 import (
-	"gopkg.in/redis.v5"
-	"helper_go/comhelper"
 	"log"
 	"strings"
 	"time"
+
+	"gopkg.in/redis.v5"
+
+	"helper_go/comhelper"
 )
 
 // redis集群连接初始化

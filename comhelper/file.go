@@ -3,11 +3,12 @@ package comhelper
 import (
 	"bufio"
 	"encoding/base64"
-	"github.com/Unknwon/goconfig"
 	"log"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/Unknwon/goconfig"
 )
 
 /**

@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"helper_go/dbhelper"
 	"html/template"
 	"io/ioutil"
 	"log"
@@ -11,11 +10,13 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+
+	"helper_go/dbhelper"
 )
 
 func genModelFile(render *template.Template, dbName, tableName string) {
 	tableSchema := []dbhelper.TABLE_SCHEMA{}
-	err := dbhelper.NewEngineInit().Sql(
+	err := dbhelper.NewEngineInit().SQL(
 		"show full columns from " + tableName + " from " + dbName).Find(&tableSchema)
 
 	if err != nil {

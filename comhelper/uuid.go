@@ -2,12 +2,13 @@ package comhelper
 
 import (
 	"bytes"
-	"github.com/satori/go.uuid"
 	"math/rand"
 	"regexp"
 	"runtime"
 	"strconv"
 	"time"
+
+	"github.com/satori/go.uuid"
 )
 
 const (
@@ -24,14 +25,14 @@ func Get_uuid(code int) string {
 	uu_id := ""
 	switch code {
 	case CODE_TIME_BASE: // 不推荐使用，因为要求使用系统命令，生产环境会有问题
-		UUID, _ := uuid.NewV1()
+		UUID := uuid.NewV1()
 		//UUID, _ := uuid.NewV1()
 		uu_id = UUID.String()
 	case CODE_NAME_HASH_MD5:
 		UUID := uuid.NewV3(uuid.NamespaceDNS, "php.net")
 		uu_id = UUID.String()
 	case CODE_RANDOM:
-		UUID, _ := uuid.NewV4()
+		UUID := uuid.NewV4()
 		//UUID, _ := uuid.NewV4()
 		uu_id = UUID.String()
 	case CODE_NAME_HASH_SHA1:

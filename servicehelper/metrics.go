@@ -5,11 +5,12 @@ package servicehelper
  */
 
 import (
-	"github.com/rcrowley/go-metrics"
 	"log"
 	"os"
 	"sync"
 	"time"
+
+	"github.com/rcrowley/go-metrics"
 )
 
 const (

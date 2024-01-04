@@ -1,13 +1,14 @@
 package dbhelper
 
 import (
-	"github.com/Unknwon/goconfig"
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/go-xorm/core"
-	"github.com/go-xorm/xorm"
-	"gopkg.in/redis.v5"
 	"log"
 	"time"
+
+	"github.com/Unknwon/goconfig"
+	_ "github.com/go-sql-driver/mysql"
+	"gopkg.in/redis.v5"
+	"xorm.io/core"
+	"xorm.io/xorm"
 )
 
 var (

@@ -2,10 +2,11 @@ package pwdhelper
 
 import (
 	"errors"
-	"github.com/ethereum/go-ethereum/common"
 	"math/big"
 	"strconv"
 	"strings"
+
+	"github.com/ethereum/go-ethereum/common"
 )
 
 /**

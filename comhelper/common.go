@@ -4,15 +4,16 @@ import (
 	"crypto/md5"
 	"encoding/json"
 	"fmt"
-	"github.com/axgle/mahonia"
-	"github.com/vmihailenco/msgpack"
-	"github.com/yvasiyarov/php_session_decoder/php_serialize"
-	"golang.org/x/crypto/bcrypt"
 	"net/url"
 	"reflect"
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/axgle/mahonia"
+	"github.com/vmihailenco/msgpack"
+	"github.com/yvasiyarov/php_session_decoder/php_serialize"
+	"golang.org/x/crypto/bcrypt"
 )
 
 /**

@@ -4,12 +4,13 @@ import (
 	"bufio"
 	"context"
 	"fmt"
-	"github.com/olivere/elastic"
-	"github.com/sirupsen/logrus"
 	"log"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/olivere/elastic"
+	"github.com/sirupsen/logrus"
 )
 
 /**

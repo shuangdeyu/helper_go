@@ -8,7 +8,7 @@ import (
 
 	"golang.org/x/crypto/pbkdf2"
 
-	"helper_go/comhelper"
+	"github.com/shuangdeyu/helper_go/comhelper"
 )
 
 /**

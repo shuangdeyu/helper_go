@@ -7,7 +7,7 @@ import (
 	"github.com/yvasiyarov/php_session_decoder/php_serialize"
 	"gopkg.in/redis.v5"
 
-	"helper_go/comhelper"
+	"github.com/shuangdeyu/helper_go/comhelper"
 )
 
 // redis连接初始化

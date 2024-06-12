@@ -7,7 +7,7 @@ import (
 
 	"gopkg.in/redis.v5"
 
-	"helper_go/comhelper"
+	"github.com/shuangdeyu/helper_go/comhelper"
 )
 
 // redis集群连接初始化

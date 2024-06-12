@@ -3,7 +3,7 @@ package apihelper
 import (
 	"encoding/json"
 
-	"helper_go/nethelper"
+	"github.com/shuangdeyu/helper_go/nethelper"
 )
 
 /**

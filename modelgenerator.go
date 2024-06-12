@@ -11,7 +11,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"helper_go/dbhelper"
+	"github.com/shuangdeyu/helper_go/dbhelper"
 )
 
 func genModelFile(render *template.Template, dbName, tableName string) {

@@ -2,8 +2,8 @@ package pdf
 
 import (
 	"encoding/base64"
+	"github.com/shuangdeyu/helper_go/comhelper"
 	"github.com/signintech/gopdf"
-	"helper_go/comhelper"
 	"log"
 )
 

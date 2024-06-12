@@ -4,7 +4,7 @@ import (
 	"html/template"
 	"strings"
 
-	"helper_go/comhelper"
+	"github.com/shuangdeyu/helper_go/comhelper"
 )
 
 /*

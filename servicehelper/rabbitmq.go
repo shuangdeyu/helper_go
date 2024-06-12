@@ -8,7 +8,7 @@ import (
 
 	"github.com/streadway/amqp"
 
-	"helper_go/comhelper"
+	"github.com/shuangdeyu/helper_go/comhelper"
 )
 
 // 主体参数

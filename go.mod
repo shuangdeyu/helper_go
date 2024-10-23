@@ -1,6 +1,6 @@
 module github.com/shuangdeyu/helper_go
 
-go 1.20
+go 1.22
 
 require (
 	github.com/Unknwon/goconfig v1.0.0
